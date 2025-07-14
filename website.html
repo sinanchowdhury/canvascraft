@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Product Store</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; padding: 0; background: #fff; }
+
+    /* Top Slider */
+    .slider-container {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+    }
+    .slider-container img {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      display: none;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+    .slider-container img.active {
+      display: block;
+      z-index: 1;
+      animation: fade 1s ease-in-out;
+    }
+    @keyframes fade {
+      from { opacity: 0.4; }
+      to { opacity: 1; }
+    }
+
+    .product-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+
+    .product-card {
+      width: 220px;
+      text-align: center;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 10px;
+      background: #f9f9f9;
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .product-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 6px;
+    }
+
+    .product-card button {
+      margin-top: 10px;
+      background-color: #25D366;
+      color: white;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .detail-view {
+      display: none;
+      padding: 20px;
+      max-width: 900px;
+      margin: auto;
+      text-align: center;
+    }
+
+    .main-image {
+      width: 100%;
+      max-height: 400px;
+      object-fit: contain;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      border: 2px solid #ccc;
+    }
+
+    .thumbnail-gallery {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 15px;
+      flex-wrap: wrap;
+    }
+
+    .thumbnail-gallery img {
+      height: 80px;
+      border-radius: 5px;
+      cursor: pointer;
+      border: 2px solid #ccc;
+      transition: 0.2s;
+    }
+
+    .thumbnail-gallery img:hover {
+      border-color: #25D366;
+    }
+
+    .whatsapp-btn {
+      background-color: #25D366;
+      color: white;
+      padding: 10px 20px;
+      text-decoration: none;
+      border-radius: 5px;
+      display: inline-block;
+      margin: 15px 0;
+    }
+
+    .about, .contact, footer {
+      padding: 20px;
+      text-align: center;
+      background-color: #f2f2f2;
+      margin-top: 30px;
+    }
+
+    footer { font-size: 14px; }
+
+    /* Mini Game */
+    #gameCanvas {
+      display: block;
+      margin: 30px auto;
+      border: 2px solid #25D366;
+      border-radius: 10px;
+      background: #fff;
+    }
+
+    @media (max-width: 600px) {
+      .product-grid { flex-direction: column; align-items: center; }
+      .slider-container img { height: 200px; }
+      .thumbnail-gallery img { height: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Top Slider -->
+<div class="slider-container">
+  <img src="Asset 4.png" class="active" alt="Slide 1">
+  <img src="Asset 4.png" alt="Slide 2">
+  <img src="Asset 4.png" alt="Slide 3">
+</div>
+
+<!-- Product List -->
+<h2 style="text-align:center;">Our Products</h2>
+<div class="product-grid" id="productGrid">
+  <div class="product-card">
+    <img src="product1/1.png" alt="Canvas">
+    <p><strong>CANVAS</strong></p>
+    <button onclick="showProduct('CANVAS', ['product1/1.png', 'product1/2.png', 'product1/3.png', 'product1/4.png','product1/5.png'], '50 BDT', 'Premium canvas print for wall décor.')">View Details</button>
+  </div>
+
+  <div class="product-card">
+    <img src="product2/7.jpg" alt="Wood Frame">
+    <p><strong>Astronot</strong></p>
+    <button onclick="showProduct('WOOD FRAME', ['product2/7.jpg', 'product2/8.jpg' , 'product2/9.jpg'], '50 BDT', 'Classic wooden photo frame for home & office.')">View Details</button>
+  </div>
+</div>
+
+<!-- Product Detail View -->
+<div class="detail-view" id="detailView">
+  <img id="mainImage" class="main-image" src="" alt="Main Product Image">
+  <div class="thumbnail-gallery" id="thumbnailGallery"></div>
+  <h2 id="detailName">Product Name</h2>
+  <p><strong>Price:</strong> <span id="detailPrice"></span></p>
+  <p id="detailDesc"></p>
+  <a class="whatsapp-btn" id="whatsappLink" href="#" target="_blank">Order via WhatsApp</a>
+  <br><br>
+  <button onclick="goBack()">← Back to Products</button>
+</div>
+
+<!-- About Us -->
+<div class="about">
+  <h3>About Us</h3>
+  <p>We sell high-quality canvas, wood frames, and photo prints. Contact us via WhatsApp to place your order quickly.</p>
+</div>
+
+<!-- Contact Section -->
+<div class="contact">
+  <h3>Contact Us</h3>
+  <a target="_blank" href="https://wa.me/+8801820406288" class="whatsapp-btn">Chat on WhatsApp</a>
+</div>
+
+<!-- Mini Game -->
+<h3 style="text-align:center; margin-top: 40px;">🎯 Play Catch the Ball Game</h3>
+<canvas id="gameCanvas" width="320" height="200"></canvas>
+
+<!-- Footer -->
+<footer>
+  <p>Contact: +8801820406288 | Email: canvascraft.official@gmail.com</p>
+</footer>
+
+<script>
+  // Top Slider Rotation
+  const slides = document.querySelectorAll('.slider-container img');
+  let currentSlide = 0;
+  setInterval(() => {
+    slides[currentSlide].classList.remove('active');
+    currentSlide = (currentSlide + 1) % slides.length;
+    slides[currentSlide].classList.add('active');
+  }, 3000);
+
+  // Product Detail View
+  function showProduct(name, images, price, desc) {
+    document.getElementById('productGrid').style.display = 'none';
+    document.getElementById('detailView').style.display = 'block';
+    document.getElementById('mainImage').src = images[0];
+
+    const gallery = document.getElementById('thumbnailGallery');
+    gallery.innerHTML = '';
+    images.forEach(src => {
+      const thumb = document.createElement('img');
+      thumb.src = src;
+      thumb.onclick = () => {
+        document.getElementById('mainImage').src = src;
+      };
+      gallery.appendChild(thumb);
+    });
+
+    document.getElementById('detailName').innerText = name;
+    document.getElementById('detailPrice').innerText = price;
+    document.getElementById('detailDesc').innerText = desc;
+    document.getElementById('whatsappLink').href = "https://wa.me/8801820406288?text=" + encodeURIComponent("I'm interested in " + name);
+  }
+
+  function goBack() {
+    document.getElementById('detailView').style.display = 'none';
+    document.getElementById('productGrid').style.display = 'flex';
+  }
+
+  // Mini Game: Catch the Ball with color change
+  const gameCanvas = document.getElementById('gameCanvas');
+  const gCtx = gameCanvas.getContext('2d');
+  let ballX = 50, ballY = 0, ballR = 10, ballSpeed = 2;
+  let catcherX = 120, catcherWidth = 80;
+  let catcherColor = "#000";
+  let score = 0;
+
+  function gameLoop() {
+    gCtx.clearRect(0, 0, gameCanvas.width, gameCanvas.height);
+
+    // Draw ball
+    gCtx.beginPath();
+    gCtx.arc(ballX, ballY, ballR, 0, Math.PI * 2);
+    gCtx.fillStyle = '#25D366';
+    gCtx.fill();
+
+    // Draw catcher
+    gCtx.fillStyle = catcherColor;
+    gCtx.fillRect(catcherX, gameCanvas.height - 20, catcherWidth, 10);
+
+    // Move ball
+    ballY += ballSpeed;
+    if (ballY > gameCanvas.height - 20 &&
+        ballX > catcherX && ballX < catcherX + catcherWidth) {
+      score++;
+      catcherColor = '#' + Math.floor(Math.random()*16777215).toString(16); // Random color
+      resetBall();
+    } else if (ballY > gameCanvas.height) {
+      resetBall();
+    }
+
+    requestAnimationFrame(gameLoop);
+  }
+
+  function resetBall() {
+    ballX = Math.random() * (gameCanvas.width - 20) + 10;
+    ballY = 0;
+  }
+
+  document.addEventListener('mousemove', e => {
+    const rect = gameCanvas.getBoundingClientRect();
+    catcherX = e.clientX - rect.left - catcherWidth / 2;
+    catcherX = Math.max(0, Math.min(gameCanvas.width - catcherWidth, catcherX));
+  });
+
+  resetBall();
+  gameLoop();
+</script>
+
+</body>
+</html>
